@@ -3,6 +3,15 @@ html {
   font-family: sans-serif;
 }
 
+html.dark {
+  background-color: #212121;
+  color: #fff;
+}
+
+.dark .nav-links a {
+  color: #fff;
+}
+
 body {
   margin: 0 auto;
   width: 100%;
@@ -23,16 +32,24 @@ h1 {
 
 /* 导航样式 */
 
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .hamburger {
-  padding-right: 20px;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
 }
 
 .hamburger .line {
   display: block;
-  width: 40px;
-  height: 5px;
-  margin-bottom: 10px;
+  width: 20px;
+  height: 2px;
+  margin-bottom: 5px;
   background-color: #81C784;
 }
 
@@ -57,7 +74,7 @@ h1 {
 
 .nav-links a:hover,
 .nav-links a:focus {
-  background-color: #81C784;
+  color: #81C784;
 }
 
 .expanded {
@@ -66,7 +83,6 @@ h1 {
 
 @media screen and (min-width: 636px) {
   .nav-links {
-    margin-left: 5em;
     display: block;
     position: static;
     width: auto;
@@ -75,7 +91,7 @@ h1 {
 
   .nav-links a {
     display: inline-block;
-    padding: 15px 20px;
+    padding: 10px 0;
   }
 
   .hamburger {
