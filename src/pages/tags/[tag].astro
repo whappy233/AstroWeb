@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostList from "../../components/PostList.astro";
+
+// 动态路由 -> 从一个文件中创建多个页面路由的过程。
+// 你可以使用 .astro 文件创建整套动态页面，这些文件需要向外暴露一个 getStaticPaths() 函数, 该函数返回一个页面路由数组。
+// 注意文件名（[tag].astro）使用方括
+export async function getStaticPaths() {
+    const allPosts = Object.values(import.meta.glob("../posts/*.md", { eager: true }));
+    const uniqueTags = [...new Set(allPosts.map((post: any) => post.frontmatter.tags).flat())];
+
+    // return [
+    //     { params: { tag: "astro" }, props: { posts: allPosts } },
+    //     { params: { tag: "successes" }, props: { posts: allPosts } },
+    //     { params: { tag: "community" }, props: { posts: allPosts } },
+    //     { params: { tag: "blogging" }, props: { posts: allPosts } },
+    //     { params: { tag: "setbacks" }, props: { posts: allPosts } },
+    //     { params: { tag: "learning in public" }, props: { posts: allPosts } },
+    // ];
+    
+    return uniqueTags.map((tag) => {
+        return {
+            params: { tag },  // 定义动态生成的页面路由名称的值
+            props: { posts: allPosts.filter((post: any) => post.frontmatter.tags.includes(tag)) },
+        };
+    });
+}
+
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+// const filteredPosts = posts.filter((post: any) => post.frontmatter.tags?.includes(tag));
+---
+
+<BaseLayout pageTitle={tag}>
+    <h1>包含「{tag}」标签的文章</h1>
+    <ul>
+        { posts.map((post: any) => <PostList url={post.url} title={post.frontmatter.title}/>) }
+    </ul>
+</BaseLayout>
